@@ -109,12 +109,12 @@ export async function POST(request, { params }) {
         )
 
     } catch (error) {
-        console.log("something went wrong", error);
+        console.log("Failed inviting user", error);
 
         return NextResponse.json(
             { 
                 success: false,
-                message: "Something went wrong"
+                message: "Failed inviting user"
             },
             { status: 500 }
         )

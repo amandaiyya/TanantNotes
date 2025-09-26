@@ -77,18 +77,18 @@ export async function POST(request, { params }) {
         return NextResponse.json(
             { 
                 success: true,
-                message: "Subscription upgraded successfully"
+                message: "Tenant subscription upgraded successfully"
             },
             { status: 200 }
         )
 
     } catch (error) {
-        console.log("something went wrong", error);
+        console.log("Failed upgrading tenant subscription", error);
 
         return NextResponse.json(
             { 
                 success: false,
-                message: "Something went wrong"
+                message: "Failed upgrading tenant subscription"
             },
             { status: 500 }
         )

@@ -74,14 +74,14 @@ export async function POST(req) {
             { status: 200 }
         )
     } catch (error) {
-        console.log(error);
+        console.log("Failed logging in user",error);
 
         return NextResponse.json(
             {
                 success: false,
-                message: "Something went wrong"
+                message: "Failed logging in user"
             },
-            { status: 400 }
+            { status: 500 }
         )
     }
 }
