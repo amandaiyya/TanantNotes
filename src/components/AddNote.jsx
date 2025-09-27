@@ -19,6 +19,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 
+// dialog for adding note
 function AddNote({
   onNoteAdded
 }) {
@@ -35,7 +36,8 @@ function AddNote({
     axios.post('/api/notes',{
         title,
         content
-    }).then(({data}) => {
+    })
+    .then(({data}) => {
         if(data.success) {
             setTitle('');
             setContent('');
@@ -43,10 +45,12 @@ function AddNote({
             onNoteAdded();
             toast.success(data.message);
         }
-    }).catch(({response}) => {
+    })
+    .catch(({response}) => {
         const errorMessage = response.data.message;
         toast.error(errorMessage);
-    }).finally(() => setLoading(false));
+    })
+    .finally(() => setLoading(false));
   }
 
   return (

@@ -29,7 +29,9 @@ function page() {
     axios.get('/api/notes')
     .then(({data}) => {
       if(data.success) {
-        setNotes(data.data);
+        if(data.data?.length > 0){
+          setNotes(data.data);
+        }
         toast.success("Notes fetched successfully");
       }
     })
@@ -47,6 +49,7 @@ function page() {
     .then(({data}) => {
       if(data.success) {
         toast.success(data.message);
+        setNotes(prev => prev.filter(note => note._id !== id));
         fetchNotes();
       }
     })
@@ -72,11 +75,11 @@ function page() {
   return (
     <div className='w-full h-full p-5'>
       <div className="w-full max-w-xl mx-auto mt-5 space-y-5">
-          <div className=' flex items-center gap-5'>
+          <div className=' flex items-center gap-5 flex-wrap'>
             <span className='text-3xl font-bold'>Notes</span>
             <AddNote onNoteAdded={fetchNotes}/>
           </div>
-          <div className='w-full grid grid-cols-2 gap-3'>
+          <div className='w-full grid grid-cols-1 sm:grid-cols-2 gap-3'>
             {notes.length <= 0 ? (
               <p className=''>Notes not available</p>
             ) : (notes.map((note) => (

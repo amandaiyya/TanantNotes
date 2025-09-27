@@ -12,13 +12,14 @@ import {
     DialogClose,
     DialogDescription
 } from "@/components/ui/dialog";  
-import { Loader2, PencilIcon, Plus } from 'lucide-react';
+import { Loader2, PencilIcon } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 
+// dialog for editing note
 function EditNote({
   id,
   onNoteEditted,

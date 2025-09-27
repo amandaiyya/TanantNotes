@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
@@ -16,11 +16,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
+import { useUserContext } from '@/context/UserContext';
 
 function page() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const {login} = useUserContext();
 
   const router = useRouter();
 
@@ -31,17 +34,23 @@ function page() {
     axios.post("/api/login",{
       email,
       password
-    }).then(({data}) => {
+    })
+    .then(({data}) => {
       if(data.success) {
         setEmail("");
         setPassword("");
+        login(data.user, data.tenant);
+        localStorage.setItem("user",JSON.stringify(data.user));
+        localStorage.setItem("tenant", JSON.stringify(data.tenant));
         toast.success(data.message)
         router.replace("/notes");
       }
-    }).catch(({response}) => {
+    })
+    .catch(({response}) => {
         const errorMessage = response.data.message;
         toast.error(errorMessage);
-    }).finally(() => setLoading(false));
+    })
+    .finally(() => setLoading(false));
   }
 
   return (

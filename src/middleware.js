@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-import jwt, { decode } from "jsonwebtoken";
-import envConfig from "./lib/envConfig";
 
 export async function middleware(request) {
     const res = NextResponse.next();
@@ -15,11 +13,19 @@ export async function middleware(request) {
         })
     }
 
-    const url = request.nextUrl.pathname;
-
-    if(url === '/api/login' || url === '/api/health') return res;
-
     const token = request.cookies.get("accessToken")?.value;
+
+    const url = request.nextUrl;
+
+    if(url.pathname === '/api/login' || url.pathname === '/api/health') return res;
+
+    if(url.pathname === '/') {
+        if(token){
+            return NextResponse.redirect(new URL('/notes', url.origin))
+        } else {   
+            return NextResponse.redirect(new URL('/login', url.origin));
+        }
+    }
 
     if(!token) {
         return NextResponse.json(
@@ -36,6 +42,7 @@ export async function middleware(request) {
 
 export const config = {
     matcher: [
-        '/api/:path*'
+        '/api/:path*',
+        '/'
     ]
   }

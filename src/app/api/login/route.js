@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 import { NextResponse } from "next/server";
 import envConfig from "@/lib/envConfig";
+import Tenant from "@/models/Tenant.model";
 
 export async function POST(req) {
     const {email, password} = await req.json()
@@ -46,6 +47,18 @@ export async function POST(req) {
             )
         }
 
+        const tenant = await Tenant.findById(user.tenantId);
+
+        if(!tenant) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: "Tenant not found"
+                },
+                { status: 404 }
+            )
+        }
+
         const accessToken = jwt.sign(
             {
                 _id: user._id,
@@ -69,7 +82,18 @@ export async function POST(req) {
         return NextResponse.json(
             {
                 success: true,
-                message: "User logged in successfully"
+                message: "User logged in successfully",
+                user: {
+                    id: user._id,
+                    email: user.email,
+                    role: user.role
+                },
+                tenant: {
+                    id: tenant._id,
+                    name: tenant.name,
+                    plan: tenant.plan,
+                    slug: tenant.slug
+                }
             },
             { status: 200 }
         )
