@@ -103,7 +103,7 @@ All notes operations are tenant-aware and role-checked:
 | title       | String               | Note title |
 | content     | String               | Note content |
 | tenantId    | ObjectId             | Reference to Tenant |
-| createdBy   | ObjectId             | Reference to User who created note |
+| owner   | ObjectId             | Reference to User who created note |
 | createdAt   | Date                 | Timestamp |
 | updatedAt   | Date                 | Timestamp |
 
